@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta http-equiv="content-language" content="ja">
+  <meta charset="UTF-8">
+  <title>html table generator - voidProc.com</title>
+  <link rel="stylesheet" href="main.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+</head>
+
+<body>
+  <div id="app">
+    <input type="checkbox" v-model="enableIndent">Indent
+    <input type="checkbox" v-model="includeTableTag">&lt;table&gt;
+    <input type="checkbox" v-model="includeTbodyTag">&lt;tbody&gt;
+    <br>
+    table class = <input type="input" v-model="tableClass"><br>
+    tr class = <input type="input" v-model="trClass"><br>
+    td class = <input type="input" v-model="tdClass"><br>
+    <input type="button" value="row-" @click="decRow">
+    <input type="button" value="row+" @click="incRow">
+    <br>
+    <input type="button" value="col-" @click="decCol">
+    <input type="button" value="col+" @click="incCol">
+    <table>
+      <tr v-for="(row, i) in table" :key="'row-' + i">
+        <td v-for="(cell, j) in row" :key="'cell-' + i + '-' + j" contenteditable="true" @blur="setInput($event, i, j)"
+          @input="setInput($event, i, j)"></td>
+      </tr>
+    </table>
+    <textarea rows="20" cols="80" :value="tableHtml"></textarea>
+    <pre>
+    </pre>
+  </div>
+  <script src="main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+body {
+    line-height: 1.3em;
+}
+
+table {
+    border: solid 1px silver;
+    border-collapse: collapse;
+}
+
+td, th {
+    min-width: 5em;
+    height: 1.5em;
+    border: solid 1px silver;
+}
+
