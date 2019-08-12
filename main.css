@@ -5,11 +5,13 @@ body {
 table {
     border: solid 1px silver;
     border-collapse: collapse;
+    margin: 2rem 0 2rem 0;
 }
 
 td, th {
-    min-width: 5em;
-    height: 1.5em;
+    min-width: 8rem;
+    min-height: 2rem;
+    padding: 4px;
     border: solid 1px silver;
 }
 

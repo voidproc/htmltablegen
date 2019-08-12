@@ -5,35 +5,65 @@
   <meta http-equiv="content-language" content="ja">
   <meta charset="UTF-8">
   <title>html table generator - voidProc.com</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <link rel="stylesheet" href="main.css">
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/babel-standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
 </head>
 
 <body>
   <div id="app">
-    <input type="checkbox" v-model="enableIndent">Indent
-    <input type="checkbox" v-model="includeTableTag">&lt;table&gt;
-    <input type="checkbox" v-model="includeTbodyTag">&lt;tbody&gt;
-    <br>
-    table class = <input type="input" v-model="tableClass"><br>
-    tr class = <input type="input" v-model="trClass"><br>
-    td class = <input type="input" v-model="tdClass"><br>
-    <input type="button" value="row-" @click="decRow">
-    <input type="button" value="row+" @click="incRow">
-    <br>
-    <input type="button" value="col-" @click="decCol">
-    <input type="button" value="col+" @click="incCol">
-    <table>
-      <tr v-for="(row, i) in table" :key="'row-' + i">
-        <td v-for="(cell, j) in row" :key="'cell-' + i + '-' + j" contenteditable="true" @blur="setInput($event, i, j)"
-          @input="setInput($event, i, j)"></td>
-      </tr>
-    </table>
-    <textarea rows="20" cols="80" :value="tableHtml"></textarea>
-    <pre>
-    </pre>
+    <v-app>
+      <v-content>
+        <v-container fluid>
+          <v-layout wrap>
+            <v-flex grow-shrink-0 pr-4>
+              <v-checkbox label="Indent" v-model="enableIndent"></v-checkbox>
+            </v-flex>
+            <v-flex grow-shrink-0 pr-4>
+              <v-checkbox label="&lt;table&gt;" v-model="includeTableTag"></v-checkbox>
+            </v-flex>
+            <v-flex grow-shrink-0 pr-4>
+              <v-checkbox label="&lt;tbody&gt;" v-model="includeTbodyTag"></v-checkbox>
+            </v-flex>
+          </v-layout>
+          <v-layout wrap>
+            <v-flex>
+              <v-layout>
+                <v-flex mr-4>
+                  <v-text-field label="&lt;table&gt; class" outlined clearable v-model="tableClass"></v-text-field>
+                </v-flex>
+                <v-flex mr-4>
+                  <v-text-field label="&lt;tr&gt; class" outlined clearable v-model="trClass"></v-text-field>
+                </v-flex>
+                <v-flex mr-4>
+                  <v-text-field label="&lt;td&gt; class" outlined clearable v-model="tdClass"></v-text-field>
+                </v-flex>
+              </v-layout>
+              <v-btn @click="decRow">row-</v-btn>
+              <v-btn @click="incRow">row+</v-btn>
+              <v-btn @click="decCol">col-</v-btn>
+              <v-btn @click="incCol">col+</v-btn>
+              <table>
+                <tbody>
+                  <tr v-for="(row, i) in table" :key="'row-' + i">
+                    <td v-for="(cell, j) in row" :key="'cell-' + i + '-' + j" contenteditable="true"
+                      @blur="setInput($event, i, j)" @input="setInput($event, i, j)"></td>
+                  </tr>
+                </tbody>
+              </table>
+              <v-textarea readonly filled rows="10" cols="80" :value="tableHtml"></v-textarea>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-content>
+    </v-app>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
   <script src="main.js"></script>
 </body>
 
