@@ -9,6 +9,7 @@ var app = new Vue({
       enableIndent: false,
       includeTableTag: true,
       includeTbodyTag: false,
+      breakTr: false,
       tableClass: '',
       trClass: '',
       tdClass: '',
@@ -40,16 +41,23 @@ var app = new Vue({
       }
 
       for (let i = 0; i < this.rows; i++) {
-        s += ' '.repeat(indent * indentDepth) + '<tr' + trclass + '>\n';
+        s += ' '.repeat(indent * indentDepth) + '<tr' + trclass + '>';
         
-        if (this.enableIndent) indentDepth++;
-        s += ' '.repeat(indent * indentDepth);
+        if (this.breakTr) {
+          if (this.enableIndent) indentDepth++;
+          s += '\n' + ' '.repeat(indent * indentDepth);
+        }
+
         for (let j = 0; j < this.cols; j++) {
           s += '<td' + tdclass + '>' + this.table[i][j] + '</td>';
         }
-        if (this.enableIndent) indentDepth--;
+        if (this.breakTr && this.enableIndent) indentDepth--;
 
-        s += '\n' + ' '.repeat(indent * indentDepth) + '</tr>\n';
+        if (this.breakTr) {
+          s += '\n' + ' '.repeat(indent * indentDepth);
+        }
+
+        s += '</tr>\n';
       }
 
       if (this.includeTbodyTag) {
