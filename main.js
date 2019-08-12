@@ -5,14 +5,18 @@ var app = new Vue({
     return {
       rows: 3,
       cols: 3,
+      activeRow: null,
+      activeCol: null,
       table: [],
       enableIndent: false,
       includeTableTag: true,
       includeTbodyTag: false,
       breakTr: false,
+      useTh: false,
       tableClass: '',
       trClass: '',
       tdClass: '',
+      thClass: '',
     }
   },
   mounted() {
@@ -29,6 +33,7 @@ var app = new Vue({
       const tableclass = this.tableClass.length > 0 ? ' class="' + this.tableClass + '"' : '';
       const trclass = this.trClass.length > 0 ? ' class="' + this.trClass + '"' : '';
       const tdclass = this.tdClass.length > 0 ? ' class="' + this.tdClass + '"' : '';
+      const thclass = this.thClass.length > 0 ? ' class="' + this.thClass + '"' : '';
 
       if (this.includeTableTag) {
         s += '<table' + tableclass + '>\n';
@@ -49,7 +54,8 @@ var app = new Vue({
         }
 
         for (let j = 0; j < this.cols; j++) {
-          s += '<td' + tdclass + '>' + this.table[i][j] + '</td>';
+          const tdth = (this.useTh && i == 0) ? 'th' : 'td';
+          s += '<' + tdth + (tdth === 'th' ? thclass : tdclass) + '>' + this.table[i][j] + '</' + tdth + '>';
         }
         if (this.breakTr && this.enableIndent) indentDepth--;
 
@@ -76,7 +82,7 @@ var app = new Vue({
     updateTableSize() {
       this.table.length = this.rows;
       for (let i = 0; i < this.rows; i++) {
-        this.table[i] = [];
+        if (this.table[i] === undefined || this.table[i] === null) this.table[i] = [];
         this.table[i].length = this.cols;
       }
       for (let i = 0; i < this.rows; i++) {
@@ -91,6 +97,10 @@ var app = new Vue({
     setInput(e, i, j) {
       this.table[i][j] = e.target.innerText.trim();
       this.table.splice(0, 0);
+    },
+    setFocus(i, j) {
+      this.activeRow = i;
+      this.activeCol = j;
     },
     decCol() {
       this.cols = Math.max(1, this.cols - 1);
@@ -107,6 +117,10 @@ var app = new Vue({
     incRow() {
       this.rows++;
       this.updateTableSize();
+    },
+    copyHtml() {
+      document.getElementById('htmltext').select();
+      document.execCommand('Copy');
     }
   }
 })

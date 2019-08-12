@@ -2,10 +2,18 @@ body {
     line-height: 1.3em;
 }
 
+.table-container {
+    margin: 1.5rem 0 1.5rem 0;
+}
+
+.table-status {
+    color: gray;
+    font-size: 90%;
+}
+
 table {
     border: solid 1px silver;
     border-collapse: collapse;
-    margin: 2rem 0 2rem 0;
 }
 
 td, th {
