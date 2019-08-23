@@ -18,23 +18,23 @@
   <div id="app">
     <v-app>
       <v-content>
+        <v-toolbar flat dark>
+          <v-toolbar-title>htmltablegen</v-toolbar-title>
+        </v-toolbar>
+
         <v-container grid-list-xl>
           <v-layout column>
-
             <v-layout>
               <v-flex>
-                <v-btn @click="decRow">行を減らす</v-btn>
-                <v-btn @click="incRow">行を増やす</v-btn>
-                <v-btn @click="decCol">列を減らす</v-btn>
-                <v-btn @click="incCol">列を増やす</v-btn>
+                <v-btn @click="insertRowAbove" class="mt-4">上に行を挿入</v-btn>
+                <v-btn @click="insertRowBelow" class="mt-4">下に行を挿入</v-btn>
 
                 <div class="table-container">
-                  <div class="table-status">{{rows}} x {{cols}}</div>
                   <table>
                     <tbody>
                       <tr v-for="(row, i) in table" :key="'row-' + i">
-                        <td v-for="(cell, j) in row" :key="'cell-' + i + '-' + j" contenteditable="true"
-                          @blur="setInput($event, i, j)" @input="setInput($event, i, j)" @focus="setFocus(i, j)"></td>
+                        <td :id="'cell-' + i + '-' + j" v-for="(cell, j) in row" :key="'cell-' + i + '-' + j" contenteditable="true"
+                          @blur="setInput($event, i, j)" @input="setInput($event, i, j)" @focus="setFocus(i, j)" :style="'background-color: ' + tdBgColor(i, j)"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -52,18 +52,21 @@
               
               <v-flex xs12 md6>
                 <v-card outlined>
-                  <v-card-title>オプション</v-card-title>
                   <v-card-text>
-                    <v-checkbox hide-details label="インデント" v-model="enableIndent"></v-checkbox>
-                    <v-checkbox hide-details label="TABLEタグを含める" v-model="includeTableTag"></v-checkbox>
-                    <v-checkbox hide-details label="TBODYタグを含める" v-model="includeTbodyTag"></v-checkbox>
-                    <v-checkbox hide-details label="TRタグで改行する" v-model="breakTr"></v-checkbox>
-                    <v-checkbox hide-details label="1行目はTHタグを使用" v-model="useTh"></v-checkbox>
+                    <v-text-field hide-details class="my-3" label="行数" v-model="option.rows" type="number"></v-text-field>
+                    <v-text-field hide-details class="my-3" label="列数" v-model="option.cols" type="number"></v-text-field>
+                    <v-btn class="mb-4" @click="applyTableSize" :disabled="rows == option.rows && cols == option.cols">適用</v-btn>
 
-                    <v-text-field hide-details class="my-3" label="TABLEタグのクラス名" v-model="tableClass"></v-text-field>
-                    <v-text-field hide-details class="my-3" label="TRタグのクラス名" v-model="trClass"></v-text-field>
-                    <v-text-field hide-details class="my-3" label="TDタグのクラス名" v-model="tdClass"></v-text-field>
-                    <v-text-field hide-details class="my-3" label="THタグのクラス名" v-model="thClass"></v-text-field>
+                    <v-checkbox hide-details label="インデント" v-model="option.enableIndent"></v-checkbox>
+                    <v-checkbox hide-details label="TABLEタグを含める" v-model="option.includeTableTag"></v-checkbox>
+                    <v-checkbox hide-details label="TBODYタグを含める" v-model="option.includeTbodyTag"></v-checkbox>
+                    <v-checkbox hide-details label="TRタグで改行する" v-model="option.breakTr"></v-checkbox>
+                    <v-checkbox hide-details label="1行目はTHタグを使用" v-model="option.useTh"></v-checkbox>
+
+                    <v-text-field hide-details class="my-3" label="TABLEタグのクラス名" v-model="option.tableClass"></v-text-field>
+                    <v-text-field hide-details class="my-3" label="TRタグのクラス名" v-model="option.trClass"></v-text-field>
+                    <v-text-field hide-details class="my-3" label="TDタグのクラス名" v-model="option.tdClass"></v-text-field>
+                    <v-text-field hide-details class="my-3" label="THタグのクラス名" v-model="option.thClass"></v-text-field>
                   </v-card-text>
                 </v-card>
               </v-flex>
